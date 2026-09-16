@@ -7,8 +7,8 @@ to look the same.
 
 Context Tabs is the small fix I use. A new Ghostty tab gets a stable color of its
 own. If I am using tmux, the repository, task and state remain visible in a narrow
-top band and the footer. It uses terminal and tmux features that already exist;
-there is no daemon, account, telemetry or network service.
+top band and the footer. The installed tool uses terminal and tmux features that
+already exist; there is no daemon, account, telemetry or network service.
 
 This is an unofficial companion for [Ghostty](https://ghostty.org/), not a
 Ghostty plugin or an upstream project.
@@ -215,6 +215,11 @@ window switchers. Use short, non-sensitive names. The example agent instruction
 in [`examples/AGENTS.md`](examples/AGENTS.md) deliberately tells agents not to
 put customer names, secrets or private paths in a title.
 
+The hosted guide uses cookie-free Cloudflare Web Analytics for aggregate visits,
+referrers and page-performance measurements. That browser beacon is present only
+on the website and is not part of the installed tool. See
+[`PRIVACY.md`](PRIVACY.md) for the exact boundary and Cloudflare documentation.
+
 ## Light mode and compatibility
 
 The current release is tested on macOS with Ghostty 1.3.1, tmux 3.7c, zsh 5.9
@@ -256,5 +261,10 @@ python3 -m unittest -q
 bash -n shell/context-tabs.sh
 zsh -n shell/context-tabs.sh
 ```
+
+Every published HTML file under `docs/` must include the Labs Cloudflare Web
+Analytics beacon immediately before its closing `body` tag. The site tests scan
+the whole directory, so future pages are checked by the same command rather than
+depending on someone remembering to add tracking by hand.
 
 Released under the MIT License.
