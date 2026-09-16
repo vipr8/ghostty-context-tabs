@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Stable per-tab colors and visible repository, task and state for Ghostty and tmux.">
+    <meta name="theme-color" content="#090b10">
+    <meta property="og:title" content="Ghostty Context Tabs">
+    <meta property="og:description" content="Stable per-tab colors and visible repository, task and state for Ghostty and tmux.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lab.avisekdas.com/">
+    <meta property="og:image" content="https://lab.avisekdas.com/assets/context-tabs-demo.png">
+    <meta property="og:image:alt" content="Three native Ghostty tabs showing repositories, tasks and distinct colors">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>Ghostty Context Tabs</title>
+    <link rel="canonical" href="https://lab.avisekdas.com/">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main>
+      <header class="intro">
+        <p class="eyebrow"><a href="https://ghostty.org/">An unofficial Ghostty companion</a></p>
+        <h1>Context for the terminal tabs that all started looking the same.</h1>
+        <p>I work primarily from the CLI. It lets me follow work across repositories and machines while staying remarkably light, but several long-running sessions quickly become visual clutter. This is the small fix I use.</p>
+      </header>
+
+      <figure class="terminal-demo">
+        <video autoplay muted loop playsinline poster="assets/context-tabs-demo.png" aria-label="Three native Ghostty tabs changing color while their repository and task labels remain visible">
+          <source src="assets/context-tabs-demo.mp4" type="video/mp4">
+          <a href="assets/context-tabs-demo.mp4">Watch the Context Tabs demonstration.</a>
+        </video>
+        <img class="demo-still" src="assets/context-tabs-demo.png" alt="Three native Ghostty tabs with Atlas API active and its repository, task and state visible">
+        <figcaption>A real Ghostty window with three native tabs. The repositories, tasks and output are fictional.</figcaption>
+      </figure>
+
+      <article>
+        <p>A fresh Ghostty tab receives a stable color. The repository comes from the current Git root; the task and state are set explicitly, either by me or by the agent working in that session. The narrow bands are ordinary tmux formats. Nothing runs in the background and nothing leaves the machine.</p>
+
+        <h2 id="install">Try it</h2>
+        <p>Clone the source, put its command on your path, and source the shell hook from <code>~/.zshrc</code> or <code>~/.bashrc</code>.</p>
+        <pre class="code"><code>git clone https://github.com/vipr8/ghostty-context-tabs \
+  ~/.local/share/ghostty-context-tabs
+
+export PATH="$HOME/.local/share/ghostty-context-tabs/bin:$PATH"
+source "$HOME/.local/share/ghostty-context-tabs/shell/context-tabs.sh"</code></pre>
+
+        <p>If you use tmux, source the included format file from <code>~/.tmux.conf</code>, then give the current session a short human name:</p>
+        <pre class="code"><code>source-file ~/.local/share/ghostty-context-tabs/tmux/context-tabs.conf
+
+context-tabs set --task "Trace cache miss" --state working --tool Codex</code></pre>
+
+        <h2>Small on purpose</h2>
+        <p>Ghostty already understands the OSC sequences for changing a running terminal’s foreground, background, cursor and title. tmux already knows how to render context. This joins those pieces without introducing an account, daemon, telemetry service or another workspace to maintain.</p>
+
+        <p>The source, exact configuration, privacy notes and removal instructions live in the <a href="https://github.com/vipr8/ghostty-context-tabs">GitHub repository</a>.</p>
+      </article>
+    </main>
+
+    <footer>
+      <p>Made by Avisek Das after too many identical terminal tabs. Unofficial and not affiliated with the Ghostty project.</p>
+    </footer>
+  </body>
+</html>
