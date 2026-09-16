@@ -13,7 +13,7 @@ there is no daemon, account, telemetry or network service.
 This is an unofficial companion for [Ghostty](https://ghostty.org/), not a
 Ghostty plugin or an upstream project.
 
-[Read the step-by-step guide](https://lab.avisekdas.com/).
+[Read the step-by-step guide](https://labs.avisekdas.com/).
 
 ![Three native Ghostty tabs showing their own colors, repositories and tasks](assets/context-tabs-demo.gif)
 
