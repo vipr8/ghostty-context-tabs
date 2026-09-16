@@ -74,8 +74,82 @@ h1 {
 article { max-width: 720px; margin: 0 auto; }
 article p { margin: 0 0 1.5rem; }
 h2 { margin: 4rem 0 1rem; font-size: clamp(1.6rem, 4vw, 2.25rem); letter-spacing: -0.025em; }
+h3 { margin: 0 0 0.75rem; font-size: 1.25rem; line-height: 1.3; }
 a { color: #9fc4ff; text-underline-offset: 0.18em; }
 code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.92em; }
+
+kbd {
+  display: inline-block;
+  min-width: 1.8em;
+  padding: 0.08em 0.38em;
+  border: 1px solid #566276;
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  background: #171d27;
+  font: 0.82em ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-align: center;
+}
+
+.note {
+  margin: 1.5rem 0 2rem;
+  padding: 1rem 1.1rem;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  background: #111a27;
+  color: #d6deea;
+}
+
+.note strong { display: block; margin-bottom: 0.2rem; color: var(--ink); }
+
+.steps {
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: guide-step;
+}
+
+.steps[start="5"] { counter-reset: guide-step 4; }
+
+.steps > li {
+  position: relative;
+  margin: 0 0 3rem;
+  padding-left: 3.4rem;
+  counter-increment: guide-step;
+}
+
+.steps > li::before {
+  position: absolute;
+  top: -0.1rem;
+  left: 0;
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #101722;
+  content: counter(guide-step);
+  font: 700 0.95rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.steps .code { margin-top: 1rem; }
+
+.check {
+  margin-top: -0.75rem;
+  color: #bcc8d7;
+  font-size: 0.98rem;
+}
+
+details {
+  margin: 0 0 0.75rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+}
+
+summary { cursor: pointer; font-weight: 650; }
+details p { margin: 0.9rem 0 0; color: #c5ced9; }
 
 .code {
   overflow-x: auto;
@@ -94,6 +168,7 @@ footer { margin-top: 6rem; padding: 2rem 0 4rem; border-top: 1px solid var(--lin
 @media (max-width: 640px) {
   main, footer { width: min(100% - 1.25rem, 1040px); }
   .intro { padding-top: 3rem; }
+  .steps > li { padding-left: 2.9rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

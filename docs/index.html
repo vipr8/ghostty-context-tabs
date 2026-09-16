@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Stable per-tab colors and visible repository, task and state for Ghostty and tmux.">
+    <meta name="description" content="A plain-language guide to giving each Ghostty tab its own color, project and task label.">
     <meta name="theme-color" content="#090b10">
     <meta property="og:title" content="Ghostty Context Tabs">
-    <meta property="og:description" content="Stable per-tab colors and visible repository, task and state for Ghostty and tmux.">
+    <meta property="og:description" content="A plain-language guide to giving each Ghostty tab its own color, project and task label.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://lab.avisekdas.com/">
     <meta property="og:image" content="https://lab.avisekdas.com/assets/context-tabs-demo.png">
@@ -34,25 +34,124 @@
       </figure>
 
       <article>
-        <p>A fresh Ghostty tab receives a stable color. The repository comes from the current Git root; the task and state are set explicitly, either by me or by the agent working in that session. The narrow bands are ordinary tmux formats. Nothing runs in the background and nothing leaves the machine.</p>
+        <p>A new Ghostty tab gets its own color. It keeps that color while you work. If you use tmux, you can also show the project, task and state in small bands. Everything stays on your computer.</p>
 
-        <h2 id="install">Try it</h2>
-        <p>Clone the source, put its command on your path, and source the shell hook from <code>~/.zshrc</code> or <code>~/.bashrc</code>.</p>
-        <pre class="code"><code>git clone https://github.com/vipr8/ghostty-context-tabs \
-  ~/.local/share/ghostty-context-tabs
+        <h2 id="install">Set it up on a Mac</h2>
+        <aside class="note">
+          <strong>New to config files?</strong>
+          A config file is only a text file that tells an app what to do. Copy one command box at a time into Ghostty. Press Return after each box.
+        </aside>
+        <p>You need Ghostty, Git and Python 3.8 or newer. You only need tmux if you want the top and bottom bands shown above.</p>
 
-export PATH="$HOME/.local/share/ghostty-context-tabs/bin:$PATH"
+        <ol class="steps">
+          <li>
+            <h3>Check the tools on your Mac</h3>
+            <p>Open Ghostty. Paste these two lines and press Return:</p>
+            <pre class="code"><code>git --version
+python3 --version</code></pre>
+            <p class="check">You should see a version number after each line. Python must be version 3.8 or newer. If Git is missing, use the install message from your Mac or visit the <a href="https://git-scm.com/downloads/mac">Git download page</a>. If Python is missing, use the <a href="https://www.python.org/downloads/macos/">Python download page</a>.</p>
+          </li>
+
+          <li>
+            <h3>Download Context Tabs</h3>
+            <p>Paste this command into Ghostty:</p>
+            <pre class="code"><code>mkdir -p ~/.local/share
+git clone https://github.com/vipr8/ghostty-context-tabs \
+  ~/.local/share/ghostty-context-tabs</code></pre>
+            <p class="check">This puts a local copy in your home folder. You only do this once.</p>
+          </li>
+
+          <li>
+            <h3>Tell your shell to load it</h3>
+            <p>Most Macs use a shell named zsh. Its settings are in a file named <code>.zshrc</code>. Run these commands to make the file if needed and open it in TextEdit:</p>
+            <pre class="code"><code>touch ~/.zshrc
+open -e ~/.zshrc</code></pre>
+            <p>Go to the bottom of the file. Paste these two lines:</p>
+            <pre class="code"><code>export PATH="$HOME/.local/share/ghostty-context-tabs/bin:$PATH"
 source "$HOME/.local/share/ghostty-context-tabs/shell/context-tabs.sh"</code></pre>
+            <p>Press <kbd>Command</kbd> + <kbd>S</kbd> to save. Close TextEdit. Return to Ghostty and run:</p>
+            <pre class="code"><code>source ~/.zshrc
+context-tabs --version</code></pre>
+            <p class="check">You should see <code>0.1.0</code>. That means the command is ready.</p>
+          </li>
 
-        <p>If you use tmux, source the included format file from <code>~/.tmux.conf</code>, then give the current session a short human name:</p>
-        <pre class="code"><code>source-file ~/.local/share/ghostty-context-tabs/tmux/context-tabs.conf
+          <li>
+            <h3>Check the colors</h3>
+            <p>Press <kbd>Command</kbd> + <kbd>T</kbd> to open a new Ghostty tab. Open one more tab the same way. Each tab should keep its own background color.</p>
+            <p>You can check the current tab with:</p>
+            <pre class="code"><code>context-tabs show</code></pre>
+            <p class="check">If you only want different colors, you are done.</p>
+          </li>
+        </ol>
 
-context-tabs set --task "Trace cache miss" --state working --tool Codex</code></pre>
+        <h2 id="bands">Add the project and task bands</h2>
+        <p>The bands in the recording come from tmux. You can skip this part if you do not use it.</p>
+
+        <ol class="steps" start="5">
+          <li>
+            <h3>Check for tmux</h3>
+            <p>Run this in Ghostty:</p>
+            <pre class="code"><code>tmux -V</code></pre>
+            <p class="check">If you see a version number, move on. If you see <code>command not found</code> and use Homebrew, run <code>brew install tmux</code>.</p>
+          </li>
+
+          <li>
+            <h3>Tell tmux to show the bands</h3>
+            <p>tmux keeps its settings in a file named <code>.tmux.conf</code>. Open it in TextEdit:</p>
+            <pre class="code"><code>touch ~/.tmux.conf
+open -e ~/.tmux.conf</code></pre>
+            <p>Go to the bottom. Paste this one line:</p>
+            <pre class="code"><code>source-file ~/.local/share/ghostty-context-tabs/tmux/context-tabs.conf</code></pre>
+            <p>Save the file and close TextEdit. Then start tmux:</p>
+            <pre class="code"><code>tmux</code></pre>
+            <p class="check">If tmux was already open, run <code>tmux source-file ~/.tmux.conf</code> to reload the file.</p>
+          </li>
+
+          <li>
+            <h3>Name the work in this tab</h3>
+            <p>Try this inside tmux:</p>
+            <pre class="code"><code>context-tabs set --project "My Project" --task "Write the guide" \
+  --state working --tool Codex</code></pre>
+            <p class="check">The project and task should appear at the top. The tool and state should appear at the bottom. The Ghostty tab also gets a short title.</p>
+          </li>
+        </ol>
+
+        <h2 id="daily-use">Use it each day</h2>
+        <p>When you are inside a Git repo, Context Tabs can find its name. You only need to give the task a short name:</p>
+        <pre class="code"><code>ctask "Fix the login page"
+cstate waiting</code></pre>
+        <p>A repo is the folder for one project. Context Tabs does not read your prompts, chats or model output. It only uses the name you type.</p>
+
+        <h2 id="contrast">Optional: make text easier to read</h2>
+        <p>This is a safety setting for text contrast. Context Tabs works without it.</p>
+        <p>While Ghostty is active, press <kbd>Command</kbd> + <kbd>,</kbd>. Ghostty will open its config file. A blank file is fine. Add this line:</p>
+        <pre class="code"><code>minimum-contrast = 4.5</code></pre>
+        <p>Save the file. Return to Ghostty and press <kbd>Command</kbd> + <kbd>Shift</kbd> + <kbd>,</kbd> to reload it.</p>
+
+        <h2 id="help">If something does not work</h2>
+        <details>
+          <summary>Ghostty says “context-tabs: command not found”</summary>
+          <p>Run <code>source ~/.zshrc</code> again. If that does not help, reopen <code>.zshrc</code> and check that both setup lines are at the bottom.</p>
+        </details>
+        <details>
+          <summary>The colors work, but I cannot see the bands</summary>
+          <p>Make sure you are inside tmux. Then run <code>tmux source-file ~/.tmux.conf</code>.</p>
+        </details>
+        <details>
+          <summary>I use Bash or Linux</summary>
+          <p>On a Mac with Bash, put the two setup lines in <code>~/.bash_profile</code>. On Linux, use <code>~/.bashrc</code> or <code>~/.zshrc</code> for your shell.</p>
+        </details>
+
+        <h2 id="remove">Remove it</h2>
+        <p>First run <code>context-tabs reset</code> to bring back your normal Ghostty colors. Then remove the two Context Tabs lines from <code>.zshrc</code>. If you set up tmux, remove its <code>source-file</code> line from <code>.tmux.conf</code>. Last, run:</p>
+        <pre class="code"><code>rm -r ~/.local/share/ghostty-context-tabs
+rm -r ~/.local/state/ghostty-context-tabs</code></pre>
+        <p>These commands delete only Context Tabs and its small local state file.</p>
 
         <h2>Small on purpose</h2>
-        <p>Ghostty already understands the OSC sequences for changing a running terminal’s foreground, background, cursor and title. tmux already knows how to render context. This joins those pieces without introducing an account, daemon, telemetry service or another workspace to maintain.</p>
+        <p>Context Tabs joins features that Ghostty and tmux already have. It does not add an account, a background service or tracking. Project and task names stay on your computer, but they can be seen in screenshots or screen sharing. Use short names that are safe to show.</p>
 
-        <p>The source, exact configuration, privacy notes and removal instructions live in the <a href="https://github.com/vipr8/ghostty-context-tabs">GitHub repository</a>.</p>
+        <p>The source, full privacy notes and test suite live in the <a href="https://github.com/vipr8/ghostty-context-tabs">GitHub repository</a>.</p>
       </article>
     </main>
 
